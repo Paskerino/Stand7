@@ -1,0 +1,23 @@
+{
+  "ExitButtonText": "Exit",
+  "StartButtonText": "Start",
+  "StopButtonText": "Stop",
+  "SerialNumberText": "#-",
+  "OperatorCodeText": "Operator Code-",
+  "SaveButtonText": "Save",
+  "LanguageChangeLabelText": "Interface Language:",
+  "SetTimeLabelText": "Set system Time:",
+  "Sensor_MainPressure": "Main pressure",
+  "Sensor_Temperature": "Temperature",
+  "FullMode": "Full tests",
+  "FirstTest": "Tightness of the BC and WCh",
+  "SecondTest": "Tightness of the  SCh and ADC",
+  "ThirdTest": "Tightness of the MCh and ST",
+  "InitialTextForStatusLine": "Initial state",
+  "Status_Test1_Started": "Start test 1",
+  "Status_Test1_StopedNormal": "Test1 is finished",
+  "Status_Test2_Started": "Start test 2",
+  "Status_Test2_StopedNormal": "Test2 is finished",
+  "Status_Test3_Started": "Start test 3",
+  "Status_Test3_StopedNormal": "Test3 is finished"
+}

@@ -1,0 +1,24 @@
+{
+  "ExitButtonText": "Вихід",
+  "StartButtonText": "Старт",
+  "StopButtonText": "Стоп",
+  "SerialNumberText": "#-",
+  "OperatorCodeText": "Код оператора-",
+  "SaveButtonText": "Зберегти",
+  "LanguageChangeLabelText": "Мова інтерфейсу:",
+  "SetTimeLabelText": "Встановити системний час:",
+  "Sensor_MainPressure": "Тиск в магістралі",
+  "Sensor_Temperature": "Температура",
+  "FullMode": "Повні випробування",
+  "FirstTest": "Герметичність каналу ТЦ та РК",
+  "SecondTest": "Герметичність ЗК та КДР",
+  "ThirdTest": "Герметичність М та ЗР",
+  "InitialTextForStatusLine": "Початковий стан",
+  "Status_Test1_Started": "Початок випробування 1",
+  "Status_Test1_StopedNormal": "Випробування 1 закінчено",
+  "Status_Test2_Started": "Початок випробування 2",
+  "Status_Test2_StopedNormal": "Випробування 2 закінчено",
+  "Status_Test3_Started": "Початок випробування 3",
+  "Status_Test3_StopedNormal": "Випробування 3 закінчено"
+
+}

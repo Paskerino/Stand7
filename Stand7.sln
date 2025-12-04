@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36603.0 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stand7", "Stand7.csproj", "{30DFA17A-AE1C-424C-84A0-22E2714B36C5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5431ABB2-B5D6-42EA-9190-ABBF77998DD6} = {5431ABB2-B5D6-42EA-9190-ABBF77998DD6}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonLogic.Logic", "..\..\..\..\Soft\CommonLogic\CommonLogic.Logic\CommonLogic.Logic.csproj", "{5431ABB2-B5D6-42EA-9190-ABBF77998DD6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{30DFA17A-AE1C-424C-84A0-22E2714B36C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30DFA17A-AE1C-424C-84A0-22E2714B36C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30DFA17A-AE1C-424C-84A0-22E2714B36C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30DFA17A-AE1C-424C-84A0-22E2714B36C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5431ABB2-B5D6-42EA-9190-ABBF77998DD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5431ABB2-B5D6-42EA-9190-ABBF77998DD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5431ABB2-B5D6-42EA-9190-ABBF77998DD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5431ABB2-B5D6-42EA-9190-ABBF77998DD6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {195364B5-13B5-4573-A343-989E0EE00648}
+	EndGlobalSection
+EndGlobal
