@@ -60,11 +60,6 @@ namespace Stand7.Services
 
             // Якщо після 10 спроб не вдалося відкрити - виходимо (або логуємо помилку), не крашимо програму
             if (!fileOpened) return;
-
-            // C# 7.3: Класичний блок using замість "using var"
-            //using (stream = new FileStream(filePath, FileMode.Append, FileAccess.Write, FileShare.Read, 4096, true))
-            //{
-            //    using (writer = new StreamWriter(stream))
             using (stream)
             using (writer)
             {
@@ -75,7 +70,6 @@ namespace Stand7.Services
 
                 try
                 {
-                    // C# 7.3: Немає "await foreach". Використовуємо цикл while + WaitToReadAsync
                     while (await _channel.Reader.WaitToReadAsync(token))
                     {
                         // Вичитуємо все, що накопичилося в буфері

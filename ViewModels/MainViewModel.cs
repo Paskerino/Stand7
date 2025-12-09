@@ -272,13 +272,13 @@ namespace Stand7
                 new ReportCell { Value = "BP4" },
                 new ReportCell { Value = "BP5" }
             };
-            List<ReportRow> tt = await logReaderService.ReadLogAsync("Archive/Data/03122025/Log_ID000-000_Sn000-000_time10_42_39.csv");
-            tt.RemoveAt(0);
+            List<ReportRow> csvDataList = await logReaderService.ReadLogAsync("Archive/Data/03122025/Log_ID000-000_Sn000-000_time10_42_39.csv");
+            csvDataList.RemoveAt(0);
             GenericReportData reportData = new GenericReportData
             {
                 Title = "Test Report",
                 Headers = header,
-                DataRows = tt
+                DataRows = csvDataList
             };
             reportService.CreateReportFileAsync(reportData,"fff", "Archive/Reports/TestReport.xlsx").Wait();
         }
