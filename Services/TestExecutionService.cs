@@ -21,7 +21,7 @@ namespace Stand7.Services
         private double innerTestStatus = 0;
         private double stepNumber = 0;
 
-        public event Action<string> TestStatusUpdated;
+        public event Action<SensorReading> TestStatusUpdated;
         private enum TestState
         {
             Idle,
@@ -41,6 +41,7 @@ namespace Stand7.Services
         int deleteMe = 0;
         private void OnDataReceived(Dictionary<string, SensorReading> readings)
         {
+            if (readings == null) return;
             innerTestStatus = readings.ContainsKey("InnerTestStatus") ? readings["InnerTestStatus"].Value : innerTestStatus;
             stepNumber = readings.ContainsKey("StepNumber") ? readings["StepNumber"].Value : stepNumber;
             if (readings.TryGetValue("InnerTestStatus", out var statusReading))
@@ -51,127 +52,142 @@ namespace Stand7.Services
         private void CheckInnerStatus(SensorReading statusReading)
         {
 
-            if (statusReading.Value == 40)
+            if (statusReading.Value == 0)
             {
-                deleteMe++;
-                if (deleteMe > 5)
-                {
-                    TestStatusUpdated?.Invoke("Status_Test1_StopedNormal");
+                //deleteMe++;
+                //if (deleteMe > 5)
+                //{
                     currentState = TestState.Idle;
-                    deleteMe = 0;
-                }
+                //    deleteMe = 0;
+                //}
             }
-            else if (statusReading.Value == 80)
-            {
-                deleteMe++;
-                if (deleteMe > 5)
-                {
-                    TestStatusUpdated?.Invoke("Status_Test2_StopedNormal");
-                    currentState = TestState.Idle;
-                    deleteMe = 0;
-                }
-            }
-            else if (statusReading.Value == 120)
-            {
-                deleteMe++;
-                if (deleteMe > 5)
-                {
-                    TestStatusUpdated?.Invoke("Status_Test3_StopedNormal");
-                    currentState = TestState.Idle;
-                    deleteMe = 0;
-                }
-            }
+            //else if (statusReading.Value == 80)
+            //{
+            //    deleteMe++;
+            //    if (deleteMe > 5)
+            //    {
+            //        currentState = TestState.Idle;
+            //        deleteMe = 0;
+            //    }
+            //}
+            //else if (statusReading.Value == 120)
+            //{
+            //    deleteMe++;
+            //    if (deleteMe > 5)
+            //    {
+            //        currentState = TestState.Idle;
+            //        deleteMe = 0;
+            //    }
+            //}
+            TestStatusUpdated?.Invoke(statusReading);
         }
 
         // Приватний метод для логіки конкретного тесту
         private async Task RunFirstTestLogic(Device device)
         {
             if (currentState != TestState.Idle) return;
+            SensorReading reading = new SensorReading();
+            reading.Value = 1000;
             try
             {
                 // 1. Повідомляємо UI (через подію)
-                TestStatusUpdated?.Invoke("Status_Test1_Started");
+                
                 bool writeResult = await modbusService.WriteRegisterAsync(device, 0, 110);
-
+                
                 if (writeResult)
                 {
-                    // ВСТАНОВЛЮЄМО СТАН: "Чекаємо на 111"
+                   
+                    reading.Value =1101;
+                    //TestStatusUpdated?.Invoke("Status_Test1_Started");
+                    
                     currentState = TestState.Test1;
                 }
                 else
                 {
-                    TestStatusUpdated?.Invoke("Status_Test1_WriteFailed");
+                    reading.Value = 1100;
+                    //TestStatusUpdated?.Invoke("Status_Test1_WriteFailed");
                     currentState = TestState.Idle;
                 }
-
+                TestStatusUpdated?.Invoke(reading);
             }
             catch (Exception ex)
             {
                 // !!! Тут має бути логування помилки ex.Message
-                TestStatusUpdated?.Invoke("Status_Test_Error");
+                //TestStatusUpdated?.Invoke("Status_Test_Error");
+                TestStatusUpdated?.Invoke(reading);
             }
         }
         private async Task RunSecondTestLogic(Device device)
         {
             if (currentState != TestState.Idle) return;
+            SensorReading reading = new SensorReading();
+            reading.Value = 1000;
             try
             {
                 // 1. Повідомляємо UI (через подію)
-                TestStatusUpdated?.Invoke("Status_Test2_Started");
+                //TestStatusUpdated?.Invoke("Status_Test2_Started");
+                
                 bool writeResult = await modbusService.WriteRegisterAsync(device, 0, 120);
 
                 if (writeResult)
                 {
-                    // ВСТАНОВЛЮЄМО СТАН: "Чекаємо на 111"
+                    reading.Value = 1201;
                     currentState = TestState.Test2;
                 }
                 else
                 {
-                    TestStatusUpdated?.Invoke("Status_Test2_WriteFailed");
+                    //TestStatusUpdated?.Invoke("Status_Test2_WriteFailed");
+                    reading.Value =1200;
                     currentState = TestState.Idle;
                 }
-
+                TestStatusUpdated?.Invoke(reading);
             }
             catch (Exception ex)
             {
-                // !!! Тут має бути логування помилки ex.Message
-                TestStatusUpdated?.Invoke("Status_Test_Error");
+                TestStatusUpdated?.Invoke(reading);
+                //TestStatusUpdated?.Invoke("Status_Test_Error");
             }
         }
         private async Task RunThirdTestLogic(Device device)
         {
             if (currentState != TestState.Idle) return;
+            SensorReading reading = new SensorReading();
+            reading.Value = 1000;
             try
             {
                 // 1. Повідомляємо UI (через подію)
-                TestStatusUpdated?.Invoke("Status_Test3_Started");
+               // TestStatusUpdated?.Invoke("Status_Test3_Started");
                 bool writeResult = await modbusService.WriteRegisterAsync(device, 0, 130);
 
                 if (writeResult)
                 {
-                    // ВСТАНОВЛЮЄМО СТАН: "Чекаємо на 111"
+                    reading.Value = 1301;
                     currentState = TestState.Test3;
                 }
                 else
                 {
-                    TestStatusUpdated?.Invoke("Status_Test3_WriteFailed");
+                    //TestStatusUpdated?.Invoke("Status_Test3_WriteFailed");
+                    reading.Value = 1300;
                     currentState = TestState.Idle;
                 }
-
+                TestStatusUpdated?.Invoke(reading);
             }
             catch (Exception ex)
             {
                 // !!! Тут має бути логування помилки ex.Message
-                TestStatusUpdated?.Invoke("Status_Test_Error");
+               // TestStatusUpdated?.Invoke("Status_Test_Error");
+                TestStatusUpdated?.Invoke(reading);
             }
         }
         private async Task RunFullTestLogic(Device device)
         {
             if (currentState != TestState.Idle) return;
+            SensorReading reading = new SensorReading();
+            reading.Value = 1000;
             try
             {
                 // 1. Повідомляємо UI (через подію)
-                TestStatusUpdated?.Invoke("Status_Test1_Started");
+                //TestStatusUpdated?.Invoke("Status_Test1_Started");
 
                 bool writeResult = await modbusService.WriteRegisterAsync(device, 0, 110);
                 if (writeResult)
@@ -180,7 +196,7 @@ namespace Stand7.Services
                 }
                 else
                 {
-                    TestStatusUpdated?.Invoke("Status_Test1_WriteFailed");
+                   // TestStatusUpdated?.Invoke("Status_Test1_WriteFailed");
                     currentState = TestState.Idle;
                     return;
                 }
@@ -193,21 +209,22 @@ namespace Stand7.Services
                 }
                 else
                 {
-                    TestStatusUpdated?.Invoke("Status_Test1_WriteFailed");
+                    //TestStatusUpdated?.Invoke("Status_Test1_WriteFailed");
                     currentState = TestState.Idle;
                 }
-
+                TestStatusUpdated?.Invoke(reading);
             }
             catch (Exception ex)
             {
                 // !!! Тут має бути логування помилки ex.Message
-                TestStatusUpdated?.Invoke("Status_Test_Error");
+                //TestStatusUpdated?.Invoke("Status_Test_Error");
+                TestStatusUpdated?.Invoke(reading);
             }
         }
         public void StartTest(TestMode mode, Device deviceToTest)
         {
             this.deviceToTest = deviceToTest;
-
+           
             switch (mode)
             {
                 case TestMode.FirstTest:

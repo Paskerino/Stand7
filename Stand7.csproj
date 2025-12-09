@@ -89,7 +89,9 @@
     <Compile Include="Services\CsvLogReaderService.cs" />
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\IDialogService.cs" />
+    <Compile Include="Services\IStatusLineParsingService.cs" />
     <Compile Include="Services\ITestExecutionService.cs" />
+    <Compile Include="Services\StatusLineParsingService.cs" />
     <Compile Include="Services\TestExecutionService.cs" />
     <Compile Include="ViewModels\MainViewModel.Pipes.cs" />
     <Compile Include="ViewModels\ModeChooseModel.cs" />

@@ -35,6 +35,7 @@ namespace Stand7
         private readonly IModbusService modbusService;
         private readonly IReportService reportService;
         private readonly ILogReaderService logReaderService;
+        private readonly IStatusLineParsingService statusLineParsingService;
 
         private string _sensorValue;
         public string SensorValue
@@ -153,7 +154,8 @@ namespace Stand7
             IDataLoggerService dataLoggerService,
             IModbusService modbusService,
             IReportService reportService,
-            ILogReaderService logReaderService
+            ILogReaderService logReaderService,
+            IStatusLineParsingService statusLineParsingService
             )
         {
             _dataManager = dataManager;
@@ -165,6 +167,7 @@ namespace Stand7
             this.modbusService = modbusService;
             this.reportService = reportService;
             this.logReaderService = logReaderService;
+            this.statusLineParsingService = statusLineParsingService;
 
             TranslationManager.Instance.PropertyChanged += OnLanguageChanged;
             _modbusPolling.DataReceived += OnDataReceived;
@@ -193,9 +196,9 @@ namespace Stand7
             SetArchiveDirs();
             // Ініціалізація труб
             InitializePipes();
-            
+
         }
-     
+
 
         public bool TestButtonAvailable(object parameter)
         {
@@ -230,8 +233,10 @@ namespace Stand7
                 StartArchiveData();
             }
         }
-        private void OnTestStatusUpdated(string statusKey)
+        private void OnTestStatusUpdated(SensorReading statusReading)
         {
+
+            string statusKey = statusLineParsingService.ParseStatusLine(statusReading);
             if (statusKey.Equals("Status_Test1_StopedNormal") ||
                 statusKey.Equals("Status_Test2_StopedNormal") ||
                 statusKey.Equals("Status_Test3_StopedNormal"))
@@ -240,11 +245,19 @@ namespace Stand7
                 StopArchiveDataAsync().Wait();
                 selectedMode = TestMode.None;
             }
-            
-            Application.Current.Dispatcher.Invoke(() =>
+            try
             {
-                UpdateStatus(statusKey);
-            });
+                if (Application.Current == null)
+                    return;
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    UpdateStatus(statusKey);
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating status: {ex.Message}");
+            }
         }
         private void UpdateStatus(string statusKey)
         {
@@ -280,9 +293,9 @@ namespace Stand7
                 Headers = header,
                 DataRows = csvDataList
             };
-            reportService.CreateReportFileAsync(reportData,"fff", "Archive/Reports/TestReport.xlsx").Wait();
+            reportService.CreateReportFileAsync(reportData, "fff", "Archive/Reports/TestReport.xlsx").Wait();
         }
-        
+
         private void BuildModeConfiguration()
         {
 
@@ -362,15 +375,21 @@ namespace Stand7
             }
             Application.Current.Shutdown();
         }
-        
+
         private void OnDataReceived(Dictionary<string, SensorReading> readings)
         {
+            if (readings == null)
+            {
+                UpdateStatus(statusLineParsingService.ParseStatusLine(null));
+                return;
+            }
             BP1Value = readings.ContainsKey("BP1") ? (readings["BP1"].Value / 100).ToString("F2") : BP1Value;
             BP2Value = readings.ContainsKey("BP2") ? (readings["BP2"].Value / 100).ToString("F2") : BP2Value;
             BP3Value = readings.ContainsKey("BP3") ? (readings["BP3"].Value / 100).ToString("F2") : BP3Value;
             BP4Value = readings.ContainsKey("BP4") ? (readings["BP4"].Value / 100).ToString("F2") : BP4Value;
             BP5Value = readings.ContainsKey("BP5") ? (readings["BP5"].Value / 100).ToString("F2") : BP5Value;
-            
+            UpdateStatus(statusLineParsingService.ParseStatusLine(readings["InnerTestStatus"]));
+
 
             if (isRecording)
             {
@@ -421,7 +440,7 @@ namespace Stand7
             Device plc1 = _availableDevices[0];
             int interval = 50;
             _modbusPolling.StartPolling(plc1, interval);
-           
+
         }
     }
 }

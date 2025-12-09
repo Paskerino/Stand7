@@ -11,7 +11,7 @@ namespace Stand7
         public interface ITestExecutionService
         {
             // Подія, на яку підпишеться ViewModel для оновлення статусу
-            event Action<string> TestStatusUpdated;
+            event Action<SensorReading> TestStatusUpdated;
 
             // Подія про завершення (можна додати пізніше)
             // event Action<TestResult> TestCompleted; 

@@ -57,6 +57,7 @@ namespace Stand7
             services.AddSingleton<IDataLoggerService, CsvLoggerService>();
             services.AddSingleton<IReportService,ReportService>();
             services.AddSingleton<ILogReaderService, CsvLogReaderService>();
+            services.AddSingleton<IStatusLineParsingService, StatusLineParsingService>();
 
             // --- Крок 2: Реєстрація Бізнес-логіки ---
             // Контейнер автоматично "зрозуміє", що для IDataManager 

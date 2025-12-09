@@ -15,10 +15,14 @@
   "ThirdTest": "Герметичність М та ЗР",
   "InitialTextForStatusLine": "Початковий стан",
   "Status_Test1_Started": "Початок випробування 1",
+  "StabilizationOfPressure": "Стабілізація тиску",
+  "Testing": "Тестування",
+  "PressureRelief": "Скид тиску до 0+0,01 МПа",
   "Status_Test1_StopedNormal": "Випробування 1 закінчено",
   "Status_Test2_Started": "Початок випробування 2",
   "Status_Test2_StopedNormal": "Випробування 2 закінчено",
   "Status_Test3_Started": "Початок випробування 3",
-  "Status_Test3_StopedNormal": "Випробування 3 закінчено"
+  "Status_Test3_StopedNormal": "Випробування 3 закінчено",
+  "NotConnectedToPLC": "Немає зв'язку з ПЛІС"
 
 }
